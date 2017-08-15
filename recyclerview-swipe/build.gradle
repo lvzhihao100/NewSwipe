@@ -1,4 +1,4 @@
-apply plugin: rootProject.ext.plugins.library
+apply plugin: 'com.android.library'
 
 android {
 
@@ -11,6 +11,13 @@ android {
     }
 
     resourcePrefix 'recycler_swipe_'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 
 dependencies {
