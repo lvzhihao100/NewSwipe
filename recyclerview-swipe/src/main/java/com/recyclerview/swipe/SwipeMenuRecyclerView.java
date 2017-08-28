@@ -75,6 +75,7 @@ public class SwipeMenuRecyclerView extends RecyclerView {
     private SwipeMenuCreator mSwipeMenuCreator;
     private SwipeMenuItemClickListener mSwipeMenuItemClickListener;
     private SwipeItemClickListener mSwipeItemClickListener;
+    private SwipeItemLongClickListener swipeItemLongClickListener;
 
     private SwipeAdapterWrapper mAdapterWrapper;
 
@@ -210,6 +211,12 @@ public class SwipeMenuRecyclerView extends RecyclerView {
     public void setSwipeItemClickListener(SwipeItemClickListener swipeItemClickListener) {
         this.mSwipeItemClickListener = swipeItemClickListener;
     }
+    /**
+     * Set item click listener.
+     */
+    public void setSwipeItemLongClickListener(SwipeItemLongClickListener swipeItemLongClickListener) {
+        this.swipeItemLongClickListener = swipeItemLongClickListener;
+    }
 
     /**
      * Default swipe menu creator.
@@ -255,6 +262,20 @@ public class SwipeMenuRecyclerView extends RecyclerView {
     };
 
     /**
+     * Default item click listener.
+     */
+    private SwipeItemLongClickListener mDefaultItemLongClickListener = new SwipeItemLongClickListener() {
+        @Override
+        public void onItemClick(View itemView, int position) {
+            if (swipeItemLongClickListener != null) {
+                position = position - getHeaderItemCount();
+                if (position >= 0)
+                    swipeItemLongClickListener.onItemClick(itemView, position);
+            }
+        }
+    };
+
+    /**
      * Get the original adapter.
      */
     public Adapter getOriginAdapter() {
@@ -279,6 +300,7 @@ public class SwipeMenuRecyclerView extends RecyclerView {
         mAdapterWrapper.setSwipeMenuCreator(mDefaultMenuCreator);
         mAdapterWrapper.setSwipeMenuItemClickListener(mDefaultMenuItemClickListener);
         mAdapterWrapper.setSwipeItemClickListener(mDefaultItemClickListener);
+        mAdapterWrapper.setSwipeItemLongClickListener(mDefaultItemLongClickListener);
         super.setAdapter(mAdapterWrapper);
 
         if (mHeaderViewList.size() > 0)

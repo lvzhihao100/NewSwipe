@@ -44,6 +44,7 @@ public class SwipeAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
     private SwipeMenuCreator mSwipeMenuCreator;
     private SwipeMenuItemClickListener mSwipeMenuItemClickListener;
     private SwipeItemClickListener mSwipeItemClickListener;
+    private SwipeItemLongClickListener swipeItemLongClickListener;
 
     SwipeAdapterWrapper(RecyclerView.Adapter adapter) {
         mAdapter = adapter;
@@ -73,6 +74,10 @@ public class SwipeAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
 
     void setSwipeItemClickListener(SwipeItemClickListener swipeItemClickListener) {
         mSwipeItemClickListener = swipeItemClickListener;
+    }
+
+    void setSwipeItemLongClickListener(SwipeItemLongClickListener swipeItemLongClickListener) {
+        this.swipeItemLongClickListener = swipeItemLongClickListener;
     }
 
     @Override
@@ -132,6 +137,14 @@ public class SwipeAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
             public void onClick(View v) {
                 mSwipeItemClickListener.onItemClick(v, viewHolder.getAdapterPosition());
             }
+        });
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                swipeItemLongClickListener.onItemClick(v, viewHolder.getAdapterPosition());
+                return true;
+            }
+
         });
 
         if (leftMenuCount > 0 || rightMenuCount > 0) {
